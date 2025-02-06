@@ -1,0 +1,121 @@
+---
+title: "Practical One"
+author: "Sayuri Reddy RDDSAY003"
+output: html_document
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+```{r}
+1 + 1
+```
+
+# 1. Find all rows in airquality with missing values
+
+```{r}
+data("airquality")
+head(airquality)
+
+missing <- airquality[!complete.cases(airquality), ]
+missing
+#42 rows with missing values
+```
+
+##### 42 rows with missing data found
+
+# 2. Summary Statistics for airquality Data
+
+## Tempurature
+
+### Mean
+
+```{r}
+mean(airquality$Temp, na.rm = TRUE)
+```
+
+### Std Deviation
+
+```{r}
+sd(airquality$Temp, na.rm = TRUE)
+```
+
+### Min
+
+```{r}
+min(airquality$Temp)
+```
+
+### Max
+
+```{r}
+max(airquality$Temp)
+```
+
+## Ozone Level
+
+### Mean
+
+```{r}
+mean(airquality$Ozone, na.rm = TRUE)
+```
+
+### Std Deviation
+
+```{r}
+sd(airquality$Ozone, na.rm = TRUE)
+```
+
+### Min
+
+```{r}
+min(airquality$Ozone, na.rm = TRUE)
+```
+
+### Max
+
+```{r}
+max(airquality$Ozone, na.rm = TRUE)
+```
+
+# Linear Regression Model
+
+### Load car data
+
+```{r}
+data("cars")
+head(cars)
+```
+
+## Fitted model
+
+```{r}
+Y <- cars$dist
+x <- cbind(1, cars$speed)
+```
+
+## Parameter Estimates
+
+```{r}
+beta_coeff <- solve(t(x) %*% x) %*% t(x) %*% Y
+```
+
+## lm() model
+
+```{r}
+model <- lm(dist ~ speed, data = cars)
+summary(model)
+```
+
+## Matrix Calculations
+
+```{r}
+print(beta_coeff)
+```
+
+```{r}
+print(coef(model))
+```
+
+### Same values for beta estimates and the model
