@@ -4,26 +4,19 @@ author: "Sayuri Reddy RDDSAY003"
 output: html_document
 ---
 
-## Quarto
-
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
-
-```{r}
-1 + 1
-```
-
 # 1. Find all rows in airquality with missing values
 
 ```{r}
+#/ echo: false
 data("airquality")
 head(airquality)
-
-missing <- airquality[!complete.cases(airquality), ]
-missing
-#42 rows with missing values
 ```
 
-##### 42 rows with missing data found
+```{r}
+missing <- airquality[!complete.cases(airquality), ]
+missing
+#42 rows with missing value
+```
 
 # 2. Summary Statistics for airquality Data
 
