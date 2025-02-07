@@ -101,6 +101,43 @@ model <- lm(dist ~ speed, data = cars)
 summary(model)
 ```
 
+## Regression Summary Function
+
+```{r}
+F <- function(x, y){
+  #beta estimate
+  be <- solve(t(x) %*% x) %*% t(x) %*% Y
+  
+  #residuals
+  y_hat <- x %*% be
+  residuals <- y - y_hat
+  
+  #variance
+  n <- nrow(x)
+  p <- ncol(x)
+  dof <- n-p
+  sig_sq <- sum(residuals^2)/ (dof)
+  
+  #std error
+  covM <- sig_sq * solve(t(x) %*% x)
+  std_error <- sqrt(diag(covM))
+  
+  #T-values
+  t_val <- be / std_error
+  
+ #Summary table
+  sum_tab <- data.frame(
+    Estimate = as.vector(be),
+    StdError = std_error,
+    Tvalue = t_val
+  )
+  
+  return(sum_tab)
+}
+result <- F(x,Y)
+print(result)
+```
+
 ## Matrix Calculations
 
 ```{r}
