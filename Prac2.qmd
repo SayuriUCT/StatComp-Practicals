@@ -1,25 +1,86 @@
 ---
-title: "Prac2"
-format: html
+title: "Practical 2"
+output: html_document
 ---
 
-## Quarto
-
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
-
-## Running Code
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+## Generate Simulated Data
 
 ```{r}
-1 + 1
+set.seed(1)
+x <- c(1:100)
+y <- sin(x/10) + rnorm(length(x), mean = 0, sd = 0.2)
 ```
 
-You can add options to executable code like this
+# LOWESS algorithm
 
 ```{r}
-#| echo: false
-2 * 2
+customLowess <- function(x, y, f) {
+  #Span
+  #n: number of obs
+  #k: number of closest neighbors
+  
+  n <- length(x)
+  k <- ceiling(f*n)
+  
+  smooth_val <- numeric(n)
+  
+  for (i in x) {
+    #compute weights
+    #absolute distance
+    dist <- abs(x - x[i])
+    
+    #Dmax
+    nearest <- order(dist)[1:k]
+    dmax <- max(dist[nearest])
+    
+    #wj
+    weights <- (1 - (dist[nearest]/dmax)^3)^3
+    
+    #Weighted Regression
+    X <-  cbind(1, x[nearest])
+    W <-  diag(weights)
+    Y <- y[nearest]
+    
+    #estimate for beta
+    beta <- solve(t(X) %*% W %*% X) %*% t(X) %*% W %*% Y
+    
+    #smoothe value
+    smooth_val[i] <- beta[1] + beta[2] * x[i]
+    
+  }
+  
+  return(smooth_val)
+  
+}
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+## Function value
+
+```{r}
+#Function value 
+#span - 0.2
+
+f <- 0.2
+funct_smooth_val <- customLowess(x, y, f)
+funct_smooth_val
+```
+
+# R Built-In Function
+
+```{r}
+R_smooth_val <- lowess(x, y, f=0.2, iter = 0)
+R_smooth_val
+```
+
+### Output is the same for the function created and the R built in function
+
+# Plot
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+plot(x, y, main = "Lowess Smoothing Comparison", xlab = "x", ylab = "y", col = "gray", pch = 16)
+
+lines(x, funct_smooth_val, col = "purple", lwd = 2, lty = 1, type = "l", label = "Custom Lowess")
+
+lines(R_smooth_val, col = "skyblue", lwd = 2, lty = 2, type = "l", label = "Built-in Lowess")
+legend("topright", legend = c("Custom Lowess", "Built-in Lowess"), col = c("purple", "skyblue"), lty = c(1, 2), lwd = 2)
+```

@@ -1,15 +1,12 @@
 ---
 title: "Practical One"
-author: "Sayuri Reddy RDDSAY003"
 output: html_document
 ---
 
 # 1. Find all rows in airquality with missing values
 
-```{r}
-#/ echo: false
+```{r, echo=FALSE}
 data("airquality")
-head(airquality)
 ```
 
 ```{r}
@@ -78,7 +75,6 @@ max(airquality$Ozone, na.rm = TRUE)
 
 ```{r}
 data("cars")
-head(cars)
 ```
 
 ## Fitted model

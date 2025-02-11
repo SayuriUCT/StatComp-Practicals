@@ -1,5 +1,25 @@
 project:
-  title: "Practical One"
+  type: website
+
+title: "Practical Assignments"
+author: "Your Name"
+
+website:
+  title: "Practicals"
+  navbar:
+    left:
+      - href: Practical1.qmd
+        text: "Practical 1"
+      - href: Prac2.qmd
+        text: "Practical 2"
+      - href: PracticalDay5.qmd
+        text: "Practical Day 4"
+     
+format:
+  html:
+    theme: cosmo
+    css: style.css
+    toc: true
+    toc-depth: 3
 
 editor: visual
-
